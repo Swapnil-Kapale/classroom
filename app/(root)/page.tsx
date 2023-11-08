@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
+import Cookies from 'js-cookie';
+
+
 
 
 
@@ -12,19 +15,28 @@ const Home = () => {
   // const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
   const router = useRouter();
 
   async function authenticate (event: React.MouseEvent<HTMLInputElement, MouseEvent>): Promise<void> {
     
-    const auth = await fetch('http://192.168.0.105:3000/', {
+      console.log(process.env.API_BASE_URL)
+
+    const auth = await fetch("http://localhost:8000/api/users/login/", {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ username: username, password: password })
     });
 
     const authResponse = await auth.json();
+    //print response body
+    const accessToken = authResponse.data.tokens.access;
+    const role = authResponse.data.role;
+    //save in cookie
+    Cookies.set('access', accessToken);
+    Cookies.set('role', role);
 
-    if (authResponse.status) {
+    if (authResponse.success) {
       router.push(`/${username}`);
     } else {
       const authStatus = document.getElementById('authStatus');
@@ -32,8 +44,6 @@ const Home = () => {
         authStatus.innerHTML = 'Incorrect username or password';
       }
     }
-
- 
   }
 
   return (
