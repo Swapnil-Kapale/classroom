@@ -63,7 +63,6 @@ const teacherassignmentpage= ({params}: teacherassignmentpageProps) => {
                 <th className='w-1/6'>Student ID</th>
                 <th className='w-1/6'>Submission Date</th>
                 <th className='w-1/6'>Status</th>
-                <th className='w-1/6'>file</th>
               </tr>
             </thead>
             <tbody>
@@ -72,11 +71,6 @@ const teacherassignmentpage= ({params}: teacherassignmentpageProps) => {
                   <td className='border p-1 text-center border-black'>{studentSubmission.student}</td>
                   <td className='border p-1 text-center border-black'>{studentSubmission.submission_time}</td>
                   <td className='border p-1 text-center border-black'>{studentSubmission.status}</td>
-                  <td className='border p-1 text-center border-black'>
-                    
-                       <Link href= {studentSubmission.files[0]}>file</Link>
-                    
-                  </td>
                 </tr>
               ))}
             </tbody>
